@@ -39,10 +39,12 @@ function creatList() {
 }
 
 function checkOrder() {
-    listItems.forEach((listItem, index) => {
-        const foodName = listItem.querySelector('.draggable').innerText.trim()
+    listItems.forEach((listItem) => {
+        const foodName = listItem.querySelector('.draggable').innerText.trim();
+        const index = +listItem.getAttribute('data-index');
 
         if (foodName !== famousFood[index]) {
+            listItem.classList.remove('right');
             listItem.classList.add('wrong');
         } else {
             listItem.classList.remove('wrong');
@@ -62,11 +64,11 @@ $('#draggable-list').sortable({
         console.log(newIndex, oldIndex)
         const foodName = ui.item.text().trim();
         ui.item.attr('data-index', newIndex)
-        if (foodName !== famousFood[newIndex]) {
-            ui.item.find('p').css('color', '#ff3838')
-        } else {
-            ui.item.find('p').css('color', ' #3ae374')
-        }
+            // if (foodName !== famousFood[newIndex]) {
+            //     ui.item.find('p').css('color', '#ff3838')
+            // } else {
+            //     ui.item.find('p').css('color', ' #3ae374')
+            // }
     }
 })
 
