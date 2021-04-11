@@ -77,3 +77,22 @@ triangle1.addEventListener('click', () => {
     }
     document.getElementById('output-content').innerHTML = `<h4>${output}</h4>`
 });
+
+triangle2.addEventListener('click', () => {
+    let output = [];
+    for (i = 1; i < 6; i++) {
+        let content = '';
+        for (j = 1; j <= i; j++) {
+            content += '*';
+        }
+        output.push(content);
+    }
+    for (i = 4; i >= 1; i--) {
+        let content = '';
+        for (j = 0; j < i; j++) {
+            content += '*';
+        }
+        output.push(content);
+    }
+    document.getElementById('output-content').innerHTML = `<h4>${output.join('<br>')}</h4>`
+});
