@@ -30,15 +30,6 @@ function getLastThreeChar(word) {
     return word.slice(-3);
 }
 
-function triangle1() {
-    for (i = 1, i < 6, i++) {
-        for (j = 1, j <= i, j++) {
-            document.write('*');
-        }
-        document.write('<br>');
-    }
-}
-
 lowerBtn.addEventListener('click', () => {
     getStr();
     const strTransform = wordLowerCase(str);
@@ -76,8 +67,13 @@ lastThreeChar.addEventListener('click', () => {
 });
 
 triangle1.addEventListener('click', () => {
-    const output = triangle1();
-    document.getElementById('output-content').innerHTML = `
-    <h4>${output}</h4>
-    `
+    let output = '';
+    let content = '';
+    for (i = 1; i < 3; i++) {
+        for (j = 0; j <= i; j++) {
+            content += '*';
+            output += content + '<br>';
+        }
+    }
+    document.getElementById('output-content').innerHTML = `<h4>${output}</h4>`
 });
