@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 740px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .input,
+        .output {
+            width: 30%;
+            margin: 20px;
+        }
+        
+        .input input {
+            margin: 10px 0;
+        }
+        
+        .button {
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+        }
+        
+        button {
+            margin: 10px;
+            padding: 4px;
+        }
+        
+        .output .container {
+            justify-content: start;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>JavaScript 小練習</h1>
+    <div class="container">
+        <div class="input">
+            <h3>請輸入字串：</h3>
+            <input type="text" id="q">
+        </div>
+
+        <div class="button">
+            <button id="lowercase">Lowercase</button>
+            <button id="uppercase">Uppercase</button>
+            <button id="lastchar">取得最後一個字元</button>
+            <button id="lastthreechar">取得最後三個字元</button>
+            <button id="triangle1">印出一個三角形</button>
+            <button id="triangle2">印出一個三角形 2</button>
+            <button id="diamond">印出一個菱形</button>
+        </div>
+
+        <div class="output">
+            <h3>轉換後的字串：</h3>
+            <div class="container" id="output-content"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
