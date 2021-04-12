@@ -68,12 +68,12 @@ lastThreeChar.addEventListener('click', () => {
 
 triangle1.addEventListener('click', () => {
     let output = '';
-    let content = '';
-    for (i = 1; i < 3; i++) {
-        for (j = 0; j <= i; j++) {
+    for (i = 1; i < 6; i++) {
+        let content = '';
+        for (j = 1; j <= i; j++) {
             content += '*';
-            output += content + '<br>';
         }
+        output += content + '<br>';
     }
     document.getElementById('output-content').innerHTML = `<h4>${output}</h4>`
 });
@@ -89,10 +89,36 @@ triangle2.addEventListener('click', () => {
     }
     for (i = 4; i >= 1; i--) {
         let content = '';
-        for (j = 0; j < i; j++) {
+        for (j = 1; j <= i; j++) {
             content += '*';
         }
         output.push(content);
     }
     document.getElementById('output-content').innerHTML = `<h4>${output.join('<br>')}</h4>`
 });
+
+diamond.addEventListener('click', () => {
+    let output = [];
+    for (i = 1; i < 10; i++) {
+        let content = '';
+        for (j = 1; j <= i; j++) {
+            content
+        }
+    }
+})
+let output = [];
+for (i = 1; i < 6; i++) {
+    let content = '';
+    for (j = 1; j <= i; j++) {
+        content += '*';
+    }
+    output.push(content);
+}
+for (i = 4; i >= 1; i--) {
+    let content = '';
+    for (j = 1; j <= i; j++) {
+        content += '*';
+    }
+    output.push(content);
+}
+console.log(output.join('\n'))
