@@ -67,10 +67,11 @@ lastThreeChar.addEventListener('click', () => {
 });
 
 triangle1.addEventListener('click', () => {
+    let n = 5;
     let output = '';
-    for (i = 1; i < 6; i++) {
+    for (i = 0; i < n; i++) {
         let content = '';
-        for (j = 1; j <= i; j++) {
+        for (j = 0; j <= i; j++) {
             content += '*';
         }
         output += content + '<br>';
@@ -79,17 +80,18 @@ triangle1.addEventListener('click', () => {
 });
 
 triangle2.addEventListener('click', () => {
+    let n = 5;
     let output = [];
-    for (i = 1; i < 6; i++) {
+    for (i = 0; i < n; i++) {
         let content = '';
-        for (j = 1; j <= i; j++) {
+        for (j = 0; j <= i; j++) {
             content += '*';
         }
         output.push(content);
     }
-    for (i = 4; i >= 1; i--) {
+    for (i = n - 1; i > 0; i--) {
         let content = '';
-        for (j = 1; j <= i; j++) {
+        for (j = 0; j < i; j++) {
             content += '*';
         }
         output.push(content);
@@ -98,27 +100,28 @@ triangle2.addEventListener('click', () => {
 });
 
 diamond.addEventListener('click', () => {
-    let output = [];
-    for (i = 1; i < 10; i++) {
+    let n = 5;
+    let output = '';
+    for (i = 0; i < n; i++) {
         let content = '';
-        for (j = 1; j <= i; j++) {
-            content
+        for (j = n - 1; j > i; j--) {
+            content += '&ensp;';
         }
+        for (k = 1; k <= 2 * i + 1; k++) {
+            content += '*';
+        }
+        output += content + '<br>';
     }
+    for (i = n - 1; i > 0; i--) {
+        let content = '';
+        for (j = n - 1; j >= i; j--) {
+            content += '&ensp;';
+        }
+        for (k = 1; k <= 2 * i - 1; k++) {
+            content += '*';
+        }
+        output += content + '<br>';
+    }
+    console.log(output)
+    document.getElementById('output-content').innerHTML = `<h4>${output}</h4>`
 })
-let output = [];
-for (i = 1; i < 6; i++) {
-    let content = '';
-    for (j = 1; j <= i; j++) {
-        content += '*';
-    }
-    output.push(content);
-}
-for (i = 4; i >= 1; i--) {
-    let content = '';
-    for (j = 1; j <= i; j++) {
-        content += '*';
-    }
-    output.push(content);
-}
-console.log(output.join('\n'))
