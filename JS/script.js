@@ -5,6 +5,7 @@ const lastThreeChar = document.getElementById('lastthreechar');
 const triangle1 = document.getElementById('triangle1');
 const triangle2 = document.getElementById('triangle2');
 const diamond = document.getElementById('diamond');
+const binary = document.getElementById('binary');
 const q = document.getElementById('q');
 let str;
 let wordLength;
@@ -28,6 +29,10 @@ function getLastChar(word) {
 
 function getLastThreeChar(word) {
     return word.slice(-3);
+}
+
+function binaryToNumber(str) {
+    return parseInt(str, 2);
 }
 
 lowerBtn.addEventListener('click', () => {
@@ -122,6 +127,14 @@ diamond.addEventListener('click', () => {
         }
         output += content + '<br>';
     }
-    console.log(output)
     document.getElementById('output-content').innerHTML = `<h4>${output}</h4>`
 })
+
+binary.addEventListener('click', () => {
+    getStr();
+    const Number = binaryToNumber(str);
+    document.getElementById('output-content').innerHTML = `
+    <h4>輸入的字串為 ${str}<br>
+    轉換後: ${Number}</h4>
+    `
+});
