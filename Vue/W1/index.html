@@ -14,18 +14,22 @@
     <div id="app">
         <div class="container">
             <div class="my-3">
-                <button type="button" class="btn btn-outline-primary" @click="status = !status">
+                <button type="button" class="btn btn-outline-primary mx-1" @click="status = !status">
             切換大頭貼解析度
-          </button> 現在圖片解析度：
-                <span>{{ status ?"清晰":"模糊"}}</span>
+            </button> 現在圖片解析度：
+                <span>{{ status ?"清晰":"模糊"}}</span> <button type="button" class="btn btn-white mx-1" @click="getUsers()">
+                    <i class="bi bi-bootstrap-reboot"></i>
+                </button>
             </div>
+
             <div class="row">
                 <div class="col-md-4 mb-3" v-for="user in data">
                     <div class="card h-100">
                         <div class="position-absolute" style="top: 20px; right: 20px">
-                            <button type="button" class="btn btn-outline-danger rounded-pill">
-                  <i class="bi bi-heart fs-5"></i>
-                </button>
+                            <button type="button" class="btn btn-outline-danger rounded-pill" @click="user.isLike = !user.isLike">
+                                <i class="bi bi-heart-fill fs-5" v-if="user.isLike"></i>
+                                <i class="bi bi-heart fs-5" v-else></i>
+                            </button>
                         </div>
                         <img v-if="status" :src="user.picture.large" class="card-img-top">
                         <img v-else :src="user.picture.thumbnail" class="card-img-top">
@@ -94,7 +98,8 @@
             data() {
                 return {
                     data: [],
-                    status: 1
+                    status: true,
+                    isLike: false
                 };
             },
             methods: {
