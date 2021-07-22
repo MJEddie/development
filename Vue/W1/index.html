@@ -17,10 +17,12 @@
                 <button type="button" class="btn btn-outline-primary">
             切換大頭貼解析度
           </button> 現在圖片解析度：
-                <span>清晰</span>
+                <span v-if="picLevel === 0">清晰</span>
+                <span v-else-if="picLevel === 1">中等</span>
+                <span v-else>模糊</span>
             </div>
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3" v-for="user in data">
                     <div class="card h-100">
                         <div class="position-absolute" style="top: 20px; right: 20px">
                             <button type="button" class="btn btn-outline-danger rounded-pill">
@@ -30,37 +32,40 @@
                         <img src="https://randomuser.me/api/portraits/men/24.jpg" class="card-img-top" />
                         <div class="card-body">
                             <h5 class="card-title">
-                                Monsieur Jérôme Clement( <span>👨</span> )
+                                {{ user.name.title }} {{ user.name.first }} {{ user.name.last }}
+                                <span v-if="user.gender === 'male'">👨</span>
+                                <span v-else>👩</span>
                             </h5>
                             <p class="card-text">
-                                Email：<a href="mailto:jerome.clement@example.com">jerome.clement@example.com</a
+                                Email：<a href="`mailto:${user.email}`">{{ user.email }}</a
                   >
                 </p>
                 <p class="card-text">
-                  Phone: <a href="tel:077 857 10 09">077 857 10 09</a>
+                  Phone: <a href="`tel:${user.phone}">{{ user.phone }}</a>
                             </p>
                             <p class="card-text">
-                                Cell: <a href="tel:075 491 99 85">075 491 99 85</a>
+                                Cell: <a href="`tel:${user.cell}`">{{ user.cell }}</a>
                             </p>
-                            <p class="card-text">City: Châtillon (Ju)</p>
-                            <p class="card-text">State: Graubünden</p>
-                            <p class="card-text">Country: Switzerland</p>
-                            <p class="card-text">Postcode: 6560</p>
+                            <p class="card-text">City: {{ user.city }}</p>
+                            <p class="card-text">State: {{ user.location.state }}</p>
+                            <p class="card-text">Country: {{ user.location.country }}</p>
+                            <p class="card-text">Postcode: {{ user.location.postcode }}</p>
                             <p>
-                                Address：<a href="https://www.google.com.tw/maps/search/Châtillon (Ju)Graubünden" target="_blank">Châtillon (Ju) Graubünden Switzerland 6560</a
+                                Address：<a href="`https://www.google.com.tw/maps/search/${user.location.city}${user.location.state}`" target="_blank">{{ user.location.city }} {{ user.location.state }} {{ user.location.country }} {{
+                                    user.location.postcode }}</a
                   >
                 </p>
                 <p class="card-text">
-                  description: Bombay, Calcutta, Madras, New Delhi
+                    {{ user.location.timezone.description }}
                 </p>
                 <p class="card-text">
                   <small class="text-muted"
-                    >dob：1965-03-08T06:47:08.901Z</small
+                    >dob：{{ user.dob.date }}</small
                   >
                 </p>
                 <p class="card-text">
                   <small class="text-muted"
-                    >registered：2016-03-08T06:04:55.159Z</small
+                    >registered：{{ user.registered.date }}</small
                   >
                 </p>
                 <iframe
@@ -83,10 +88,31 @@
       integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="https://unpkg.com/vue@next"></script>
-    <script src="data.js"></script>
     <script>
-      console.log(results);
+        Vue.createApp({
+            data() {
+                return {
+                    data: [],
+                    picLevel: 0
+                };
+            },
+            methods: {
+                getUsers() {
+                    axios.get("https://randomuser.me/api/?results=6")
+                        .then(res => {
+                            this.data = res.data.results;
+                        })
+                        .catch(err => {
+                            console.log(err.res);
+                        });
+                }
+            },
+            mounted() {
+                this.getUsers();
+            }
+        }).mount('#app');
     </script>
   </body>
 </html>
