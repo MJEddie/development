@@ -14,12 +14,10 @@
     <div id="app">
         <div class="container">
             <div class="my-3">
-                <button type="button" class="btn btn-outline-primary">
+                <button type="button" class="btn btn-outline-primary" @click="status = !status">
             切換大頭貼解析度
           </button> 現在圖片解析度：
-                <span v-if="picLevel === 0">清晰</span>
-                <span v-else-if="picLevel === 1">中等</span>
-                <span v-else>模糊</span>
+                <span>{{ status ?"清晰":"模糊"}}</span>
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3" v-for="user in data">
@@ -29,7 +27,8 @@
                   <i class="bi bi-heart fs-5"></i>
                 </button>
                         </div>
-                        <img src="https://randomuser.me/api/portraits/men/24.jpg" class="card-img-top" />
+                        <img v-if="status" :src="user.picture.large" class="card-img-top">
+                        <img v-else :src="user.picture.thumbnail" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">
                                 {{ user.name.title }} {{ user.name.first }} {{ user.name.last }}
@@ -95,7 +94,7 @@
             data() {
                 return {
                     data: [],
-                    picLevel: 0
+                    status: 1
                 };
             },
             methods: {
