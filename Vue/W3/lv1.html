@@ -20,7 +20,7 @@
         <div id="app" class="container my-3">
             <div class="input-group mb-3">
                 <span class="input-group-text">待辦事項</span>
-                <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo" @keyup.enter="addTodo" v-model="newTodo">
+                <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo" @keyup.enter="addTodo" v-model="newTodo" v-focus>
                 <button class="btn btn-primary" type="button" id="addTodo" @click="addTodo">新增</button>
             </div>
             <div class="card text-center">
@@ -33,7 +33,7 @@
                                     <label :for="todo.id" :class="{completed:todo.completed}">{{ todo.item }}</label>
                                 </div>
                                 <div v-else class="d-flex justify-content-between">
-                                    <input type="text" class="form-control" v-model="cacheItem" @keyup.enter="finishEdit(todo)">
+                                    <input type="text" class="form-control" v-model="cacheItem" @keyup.enter="finishEdit(todo)" v-focus>
                                     <button class="btn btn-outline border-0 text-success" @click="finishEdit(todo)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
                                             <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
@@ -144,14 +144,20 @@
                 editTodo(todo) {
                     this.cacheTodo = todo;
                     this.cacheItem = todo.item;
-
-                    console.log(this.cacheTodo)
                 },
 
                 finishEdit(todo) {
                     todo.item = this.cacheItem;
                     this.cacheItem = '';
                     this.cacheTodo = {};
+                }
+            },
+            directives: {
+                focus: {
+                    // directive definition
+                    mounted(el) {
+                        el.focus()
+                    }
                 }
             }
         }).mount('#app');
