@@ -70,7 +70,7 @@
                     </li> -->
                 </ul>
                 <div class="card-footer d-flex justify-content-between">
-                    <span>有 <span id="taskCount">0</span> 筆任務</span>
+                    <span>有 <span id="taskCount">{{ undoneTodosAmount }}</span> 筆任務</span>
                     <div>
                         <a href="#" class="me-3" @click.prevent="tag ='all'">全部</a>
                         <a href="#" class="me-3" @click.prevent="tag ='undone'">未完成</a>
@@ -134,6 +134,9 @@
                         case 'completed':
                             return this.todoList.filter(todo => todo.completed)
                     }
+                },
+                undoneTodosAmount: function() {
+                    return this.todoList.filter(todo => !todo.completed).length;
                 }
             }
         }).mount('#app');
