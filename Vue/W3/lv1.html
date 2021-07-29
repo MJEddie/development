@@ -25,7 +25,7 @@
             </div>
             <div class="card text-center">
                 <ul class="list-group list-group-flush text-left" id="todoList">
-                    <li v-for="todo in todoList" :key="todo.id" class="list-group-item">
+                    <li v-for="todo in filteredTodos" :key="todo.id" class="list-group-item">
                         <div class="d-flex">
                             <div class="form-check d-flex align-items-center">
                                 <div>
@@ -72,9 +72,9 @@
                 <div class="card-footer d-flex justify-content-between">
                     <span>有 <span id="taskCount">0</span> 筆任務</span>
                     <div>
-                        <a href="#" class="me-3" :class="{'active': tag == 'all'}" @click.prevent="tag ='all'">全部</a>
-                        <a href="#" class="me-3">未完成</a>
-                        <a href="#" class="me-3">已完成</a>
+                        <a href="#" class="me-3" @click.prevent="tag ='all'">全部</a>
+                        <a href="#" class="me-3" @click.prevent="tag ='undone'">未完成</a>
+                        <a href="#" class="me-3" @click.prevent="tag ='completed'">已完成</a>
                         <a href="#" @click="clearTodos">清除所有任務</a>
                     </div>
                 </div>
@@ -123,6 +123,19 @@
                 // }
             },
 
+            computed: {
+                filteredTodos: function() {
+                    let nowTag = this.tag;
+                    switch (nowTag) {
+                        case 'all':
+                            return this.todoList.filter(todo => true);
+                        case 'undone':
+                            return this.todoList.filter(todo => !todo.completed)
+                        case 'completed':
+                            return this.todoList.filter(todo => todo.completed)
+                    }
+                }
+            }
         }).mount('#app');
     </script>
 </body>
