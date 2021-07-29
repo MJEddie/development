@@ -28,9 +28,17 @@
                     <li v-for="todo in filteredTodos" :key="todo.id" class="list-group-item">
                         <div class="d-flex">
                             <div class="form-check d-flex align-items-center">
-                                <div>
-                                    <input :id="todo.it" type="checkbox" class="form-check-input" v-model="todo.completed">
+                                <div v-if="todo.id != cacheTodo.id">
+                                    <input :id="todo.id" type="checkbox" class="form-check-input" v-model="todo.completed">
                                     <label :for="todo.id" :class="{completed:todo.completed}">{{ todo.item }}</label>
+                                </div>
+                                <div v-else class="d-flex justify-content-between">
+                                    <input type="text" class="form-control" v-model="cacheItem" @keyup.enter="finishEdit(todo)">
+                                    <button class="btn btn-outline border-0 text-success" @click="finishEdit(todo)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                            <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                             <div class="ms-auto">
@@ -45,8 +53,6 @@
                                     </svg>
                                 </button>
                             </div>
-
-                            </button>
                         </div>
                     </li>
                     <!-- <li class="list-group-item">
@@ -95,6 +101,22 @@
                 }
             },
 
+            computed: {
+                filteredTodos: function() {
+                    switch (this.tag) {
+                        case 'all':
+                            return this.todoList.filter(todo => true);
+                        case 'undone':
+                            return this.todoList.filter(todo => !todo.completed)
+                        case 'completed':
+                            return this.todoList.filter(todo => todo.completed)
+                    }
+                },
+                undoneTodosAmount: function() {
+                    return this.todoList.filter(todo => !todo.completed).length;
+                }
+            },
+
             methods: {
                 addTodo() {
                     const todoItem = this.newTodo.trim();
@@ -109,34 +131,27 @@
                     });
                     this.newTodo = '';
                 },
+
                 removeTodo(todo) {
                     const index = this.todoList.findIndex(obj => obj.id === todo.id);
                     this.todoList.splice(index, 1);
                 },
+
                 clearTodos() {
                     this.todoList.splice(0, this.todoList.length);
                 },
-                // editTodo(todo) {
-                //     this.cacheTodo = this.todo;
-                //     this.cacheItem = todo.item;
-                //     console.log(todo.item)
-                // }
-            },
 
-            computed: {
-                filteredTodos: function() {
-                    let nowTag = this.tag;
-                    switch (nowTag) {
-                        case 'all':
-                            return this.todoList.filter(todo => true);
-                        case 'undone':
-                            return this.todoList.filter(todo => !todo.completed)
-                        case 'completed':
-                            return this.todoList.filter(todo => todo.completed)
-                    }
+                editTodo(todo) {
+                    this.cacheTodo = todo;
+                    this.cacheItem = todo.item;
+
+                    console.log(this.cacheTodo)
                 },
-                undoneTodosAmount: function() {
-                    return this.todoList.filter(todo => !todo.completed).length;
+
+                finishEdit(todo) {
+                    todo.item = this.cacheItem;
+                    this.cacheItem = '';
+                    this.cacheTodo = {};
                 }
             }
         }).mount('#app');
