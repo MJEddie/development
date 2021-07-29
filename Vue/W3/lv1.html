@@ -20,17 +20,17 @@
         <div id="app" class="container my-3">
             <div class="input-group mb-3">
                 <span class="input-group-text">待辦事項</span>
-                <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo" v-model="newTodo">
+                <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo" @keyup.enter="addTodo" v-model="newTodo">
                 <button class="btn btn-primary" type="button" id="addTodo" @click="addTodo">新增</button>
             </div>
             <div class="card text-center">
                 <ul class="list-group list-group-flush text-left" id="todoList">
-                    <li class="list-group-item" v-for="todo in todoList" :key=todo.id>
+                    <li v-for="todo in todoList" :key="todo.id" class="list-group-item">
                         <div class="d-flex">
                             <div class="form-check d-flex align-items-center">
                                 <div>
-                                    <input :id="todo.it" type="checkbox" class="form-check-input" @click="todo.isChecked = !todo.isChecked">
-                                    <label :for="todo.id" :class="{completed:todo.isChecked}">{{ todo.item }}</label>
+                                    <input :id="todo.it" type="checkbox" class="form-check-input" v-model="todo.completed">
+                                    <label :for="todo.id" :class="{completed:todo.completed}">{{ todo.item }}</label>
                                 </div>
                             </div>
                             <div class="ms-auto">
@@ -72,10 +72,10 @@
                 <div class="card-footer d-flex justify-content-between">
                     <span>有 <span id="taskCount">0</span> 筆任務</span>
                     <div>
-                        <a href="#" class="me-3">全部</a>
+                        <a href="#" class="me-3" :class="{'active': tag == 'all'}" @click.prevent="tag ='all'">全部</a>
                         <a href="#" class="me-3">未完成</a>
                         <a href="#" class="me-3">已完成</a>
-                        <a href="#">清除所有任務</a>
+                        <a href="#" @click="clearTodos">清除所有任務</a>
                     </div>
                 </div>
             </div>
@@ -91,9 +91,10 @@
                     todoList: [],
                     cacheItem: '',
                     cacheTodo: {},
-                    isChecked: false
+                    tag: 'all'
                 }
             },
+
             methods: {
                 addTodo() {
                     const todoItem = this.newTodo.trim();
@@ -103,7 +104,8 @@
 
                     this.todoList.push({
                         id: Math.floor(Date.now()),
-                        item: todoItem
+                        item: todoItem,
+                        completed: false
                     });
                     this.newTodo = '';
                 },
@@ -111,12 +113,16 @@
                     const index = this.todoList.findIndex(obj => obj.id === todo.id);
                     this.todoList.splice(index, 1);
                 },
-                editTodo(todo) {
-                    this.cacheTodo = this.todo;
-                    this.cacheItem = todo.item;
-                    console.log(todo.item)
-                }
+                clearTodos() {
+                    this.todoList.splice(0, this.todoList.length);
+                },
+                // editTodo(todo) {
+                //     this.cacheTodo = this.todo;
+                //     this.cacheItem = todo.item;
+                //     console.log(todo.item)
+                // }
             },
+
         }).mount('#app');
     </script>
 </body>
