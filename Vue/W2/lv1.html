@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>簡易計算機</title>
+</head>
+
+<body>
+    <div id="app" class="p-md-5">
+        <div class="calculator">
+            <div class="cal-head">
+                <div class="cal-record">{{ toCurrency(record) }}</div>
+                <div class="cal-result">{{ toCurrency(total) }}</div>
+            </div>
+            <div class="cal-body">
+                <div class="row g-0">
+                    <div class="col-3"
+                             v-for="(item, key) in symbol" :key="key">
+                        <span role="button" @click="inputNum(item)">{{ item }}</span>
+                    </div>
+                    <div class="col-3">
+                        <span role="button" @click="reset">AC</span>
+                    </div>
+                    <div class="col-3">
+                        <span role="button" @click="backspace">
+                            <i class="material-icons-outlined">
+                                backspace
+                            </i>
+                        </span>
+                    </div>
+                    <div class="col-6">
+                        <span role="button" @click="countTotal">=</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>
