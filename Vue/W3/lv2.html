@@ -139,8 +139,10 @@
 
                 removeTodo(todo) {
                     const index = this.todoList.findIndex(obj => obj.id === todo.id);
-                    this.todoList.splice(index, 1);
-                    this.setItem();
+                    setTimeout(() => {
+                        this.todoList.splice(index, 1);
+                        this.setItem();
+                    }, 300);
                 },
 
                 clearTodos() {
