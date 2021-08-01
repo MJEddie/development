@@ -49,6 +49,7 @@
                             {{ total }}
                         </li>
                     </ul>
+                    <button type="button" class="btn btn-danger" v-if="totalHistory.length != 0" @click="clearHistory">清除紀錄</button>
                 </div>
             </div>
         </div>
@@ -87,9 +88,19 @@
 
                     let history = (`${this.num1} ${this.math} ${this.num2} = ${this.total}`);
                     this.totalHistory.push(history);
-
                     this.num1 = '';
                     this.num2 = '';
+                    this.setItem();
+                },
+
+                setItem() {
+                    localStorage.setItem('totalHistory', JSON.stringify(this.totalHistory));
+                    console.log(this.totalHistory)
+                },
+
+                clearHistory() {
+                    this.totalHistory = [];
+                    localStorage.clear();
                 }
             }
         }).mount('#app');
