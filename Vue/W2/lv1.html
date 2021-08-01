@@ -23,46 +23,30 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="exampleFormControlInput1" class="form-label">第一個數字</label
-              >
-              <input
-                id="num1"
-                type="number"
-                class="form-control"
-                placeholder="請輸入要計算的第一個數字"
-              />
-            </div>
-            <div class="col-md-6">
-              <label for="num2" class="form-label">第二個數字</label>
-                            <input id="num2" type="number" class="form-control" placeholder="請輸入要計算的第二個數字" />
+                            <label for="exampleFormControlInput1" class="form-label">第一個數字</label>
+                            <input id="num1" type="number" class="form-control" placeholder="請輸入要計算的第一個數字" v-model.number="num1" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="num2" class="form-label">第二個數字</label>
+                            <input id="num2" type="number" class="form-control" placeholder="請輸入要計算的第二個數字" v-model.number="num2" />
                         </div>
                         <div class="col-md-12 mt-3">
                             <div class="btn-group w-100">
-                                <button type="button" class="btn btn-outline-primary w-25">
-                  +
-                </button>
-                                <button type="button" class="btn btn-outline-primary w-25">
-                  -
-                </button>
-                                <button type="button" class="btn btn-outline-primary w-25">
-                  *
-                </button>
-                                <button type="button" class="btn btn-outline-primary w-25">
-                  /
-                </button>
+                                <button type="button" class="btn btn-outline-primary w-25" :class="{'active': math === '+'}" @click="math = '+'">+</button>
+                                <button type="button" class="btn btn-outline-primary w-25" :class="{'active': math === '-'}" @click="math = '-'">-</button>
+                                <button type="button" class="btn btn-outline-primary w-25" :class="{'active': math === '*'}" @click="math = '*'">*</button>
+                                <button type="button" class="btn btn-outline-primary w-25" :class="{'active': math === '/'}" @click="math = '/'">/</button>
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline-primary d-block mt-3 w-100">
-            計算結果
-          </button>
-                    <h4 class="mt-3">結果：100</h4>
+                    <button type="button" class="btn btn-outline-primary d-block mt-3 w-100" @click="operatorNum">計算結果</button>
+                    <h4 class="mt-3">結果：{{ total }}</h4>
                 </div>
                 <div class="col-3">
                     <h5>歷史紀錄</h5>
                     <ul>
-                        <li>
-                            1 + 1 = 2
+                        <li v-for="total in totalHistory">
+                            {{ total }}
                         </li>
                     </ul>
                 </div>
@@ -71,7 +55,44 @@
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
-        Vue.createApp({}).mount('#app');
+        Vue.createApp({
+            data() {
+                return {
+                    num1: '',
+                    num2: '',
+                    total: 0,
+                    math: '+',
+                    totalHistory: []
+                }
+            },
+
+            methods: {
+                operatorNum() {
+                    switch (this.math) {
+                        case '+':
+                            this.total = this.num1 + this.num2
+                            break;
+                        case '-':
+                            this.total = this.num1 - this.num2
+                            break;
+                        case '*':
+                            this.total = this.num1 * this.num2
+                            break;
+                        case '/':
+                            this.total = this.num1 / this.num2
+                            break;
+                        default:
+                            break;
+                    }
+
+                    let history = (`${this.num1} ${this.math} ${this.num2} = ${this.total}`);
+                    this.totalHistory.push(history);
+
+                    this.num1 = '';
+                    this.num2 = '';
+                }
+            }
+        }).mount('#app');
     </script>
 </body>
 
