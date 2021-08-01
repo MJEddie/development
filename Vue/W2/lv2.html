@@ -87,7 +87,12 @@
                     }
 
                     let history = (`${this.num1} ${this.math} ${this.num2} = ${this.total}`);
+
+                    if (this.totalHistory.length >= 10) {
+                        this.totalHistory.shift();
+                    }
                     this.totalHistory.push(history);
+
                     this.num1 = '';
                     this.num2 = '';
                     this.setItem();
@@ -95,7 +100,6 @@
 
                 setItem() {
                     localStorage.setItem('totalHistory', JSON.stringify(this.totalHistory));
-                    console.log(this.totalHistory)
                 },
 
                 clearHistory() {
