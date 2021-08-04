@@ -88,14 +88,89 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
-    <script type="module">
-        import { createApp, ref, onMounted, computed } from "https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.0-beta.7/vue.esm-browser.min.js"; const app = createApp({ setup() { const newTodo = ref(""); const todoList = ref([]); const cacheItem = ref(""); const
-        cacheTodo = ref({}); const tag = ref("all"); const filteredTodos = computed(() => { switch (tag.value) { case "all": return todoList.value.filter((todo) => true); case "undone": return todoList.value.filter((todo) => !todo.completed); case "completed":
-        return todoList.value.filter((todo) => todo.completed); } }); const undoneTodosAmount = computed(() => { return todoList.value.filter((todo) => !todo.completed).length; }); function addTodo() { const todoItem = newTodo.value.trim(); if (!todoItem)
-        { return; } todoList.value.push({ id: Math.floor(Date.now()), item: todoItem, completed: false }); newTodo.value = ""; } function removeTodo(todo) { const index = todoList.value.findIndex((obj) => obj.id === todo.id); todoList.value.splice(index,
-        1); } function clearTodos() { todoList.value.splice(0, todoList.value.length); } function editTodo(todo) { cacheTodo.value = todo; cacheItem.value = todo.item; } function finishEdit(todo) { todo.item = cacheItem.value; cacheItem.value = ""; cacheTodo.value
-        = {}; } function handleBlur(todo) { todo.item = todoList.value.item; cacheItem.value = ""; cacheTodo.value = {}; } return { newTodo, todoList, cacheItem, cacheTodo, tag, addTodo, removeTodo, clearTodos, editTodo, finishEdit, handleBlur, filteredTodos,
-        undoneTodosAmount }; } }); app.directive("focus", { mounted(el) { el.focus(); } }); app.mount("#app");
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            setup() {
+                const newTodo = Vue.ref("");
+                const todoList = Vue.ref([]);
+                const cacheItem = Vue.ref("");
+                const cacheTodo = Vue.ref({});
+                const tag = Vue.ref("all");
+                const filteredTodos = Vue.computed(() => {
+                    switch (tag.value) {
+                        case "all":
+                            return todoList.value.filter((todo) => true);
+                        case "undone":
+                            return todoList.value.filter((todo) => !todo.completed);
+                        case "completed":
+                            return todoList.value.filter((todo) => todo.completed);
+                    }
+                });
+                const undoneTodosAmount = Vue.computed(() => {
+                    return todoList.value.filter((todo) => !todo.completed).length;
+                });
+
+                function addTodo() {
+                    const todoItem = newTodo.value.trim();
+                    if (!todoItem) {
+                        return;
+                    }
+                    todoList.value.push({
+                        id: Math.floor(Date.now()),
+                        item: todoItem,
+                        completed: false
+                    });
+                    newTodo.value = "";
+                }
+
+                function removeTodo(todo) {
+                    const index = todoList.value.findIndex((obj) => obj.id === todo.id);
+                    todoList.value.splice(index,
+                        1);
+                }
+
+                function clearTodos() {
+                    todoList.value.splice(0, todoList.value.length);
+                }
+
+                function editTodo(todo) {
+                    cacheTodo.value = todo;
+                    cacheItem.value = todo.item;
+                }
+
+                function finishEdit(todo) {
+                    todo.item = cacheItem.value;
+                    cacheItem.value = "";
+                    cacheTodo.value = {};
+                }
+
+                function handleBlur(todo) {
+                    todo.item = todoList.value.item;
+                    cacheItem.value = "";
+                    cacheTodo.value = {};
+                }
+                return {
+                    newTodo,
+                    todoList,
+                    cacheItem,
+                    cacheTodo,
+                    tag,
+                    addTodo,
+                    removeTodo,
+                    clearTodos,
+                    editTodo,
+                    finishEdit,
+                    handleBlur,
+                    filteredTodos,
+                    undoneTodosAmount
+                };
+            }
+        }).directive("focus", {
+            mounted(el) {
+                el.focus();
+            }
+        }).mount("#app");
     </script>
 </body>
 
