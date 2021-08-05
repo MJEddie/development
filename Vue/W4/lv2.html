@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <style>
+        .completed {
+            text-decoration: line-through
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div id="app" class="container my-3">
+            <div class="input-group mb-3">
+                <span class="input-group-text">待辦事項</span>
+                <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo" @keyup.enter="addTodo" v-model="newTodo" v-focus>
+                <button class="btn btn-primary" type="button" id="addTodo" @click="addTodo">新增</button>
+            </div>
+            <div class="card text-center">
+                <ul class="list-group list-group-flush text-left" id="todoList">
+                    <li v-for="todo in filteredTodos" :key="todo.id" class="list-group-item">
+                        <div class="d-flex">
+                            <div class="form-check d-flex align-items-center">
+                                <div v-if="todo.id != cacheTodo.id">
+                                    <input :id="todo.id" type="checkbox" class="form-check-input" v-model="todo.completed">
+                                    <label :for="todo.id" :class="{completed:todo.completed}">{{ todo.item }}</label>
+                                </div>
+                                <div v-else class="d-flex justify-content-between">
+                                    <input type="text" class="form-control" v-model="cacheItem" @keyup.enter="finishEdit(todo)" v-focus @blur="handleBlur">
+                                    <button type="button" class="btn btn-outline border-0 text-success" @click="finishEdit(todo)" @mousedown.prevent>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                            <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ms-auto">
+                                <button type="button" class="btn btn-outline border-0" @click="editTodo(todo)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                    </svg>
+                                </button>
+                                <button type="button" class="btn btn-outline border-0" @click="removeTodo(todo)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- <li class="list-group-item">
+                        <div class="d-flex">
+                            <div class="form-check">
+                                <div>
+                                    <input id="b" type="checkbox" class="form-check-input" checked>
+                                    <label for="b" class="completed">已完成 代辦事項</label>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-close ms-auto remove">
+                </button>
+                        </div>
+                    </li> -->
+                    <!-- <li class="list-group-item">
+                        <div class="d-flex">
+                            <div class="form-check">
+                                <input class="form-control" type="text" placeholder="編輯" />
+                            </div>
+                        </div>
+                    </li> -->
+                </ul>
+                <div class="card-footer d-flex justify-content-between">
+                    <span>有 <span id="taskCount">{{ undoneTodosAmount }}</span> 筆任務</span>
+                    <div>
+                        <a href="#" class="me-3" @click.prevent="tag ='all'">全部</a>
+                        <a href="#" class="me-3" @click.prevent="tag ='undone'">未完成</a>
+                        <a href="#" class="me-3" @click.prevent="tag ='completed'">已完成</a>
+                        <a href="#" @click="clearTodos">清除所有任務</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            setup() {
+                const newTodo = Vue.ref("");
+                const todoList = Vue.ref(JSON.parse(localStorage.getItem('todoList')) || []);
+                const cacheItem = Vue.ref("");
+                const cacheTodo = Vue.ref({});
+                const tag = Vue.ref("all");
+
+                const filteredTodos = Vue.computed(() => {
+                    switch (tag.value) {
+                        case "all":
+                            return todoList.value.filter((todo) => true);
+                        case "undone":
+                            return todoList.value.filter((todo) => !todo.completed);
+                        case "completed":
+                            return todoList.value.filter((todo) => todo.completed);
+                    }
+                });
+
+                const undoneTodosAmount = Vue.computed(() => {
+                    return todoList.value.filter((todo) => !todo.completed).length;
+                });
+
+                function setItem() {
+                    localStorage.setItem('todoList', JSON.stringify(todoList.value));
+                }
+
+                function addTodo() {
+                    const todoItem = newTodo.value.trim();
+                    if (!todoItem) {
+                        return;
+                    }
+                    todoList.value.push({
+                        id: Math.floor(Date.now()),
+                        item: todoItem,
+                        completed: false
+                    });
+                    setItem();
+                    newTodo.value = "";
+                }
+
+                function removeTodo(todo) {
+                    const index = todoList.value.findIndex((obj) => obj.id === todo.id);
+                    setTimeout(() => {
+                        todoList.value.splice(index, 1);
+                        setItem();
+                    }, 300);
+                }
+
+                function clearTodos() {
+                    todoList.value.splice(0, todoList.value.length);
+                    setItem();
+                }
+
+                function editTodo(todo) {
+                    cacheTodo.value = todo;
+                    cacheItem.value = todo.item;
+                }
+
+                function finishEdit(todo) {
+                    todo.item = cacheItem.value;
+                    setItem();
+                    console.log('finish')
+                    cacheItem.value = "";
+                    cacheTodo.value = {};
+                }
+
+                function handleBlur(todo) {
+                    cacheTodo.value = {};
+                }
+                return {
+                    newTodo,
+                    todoList,
+                    cacheItem,
+                    cacheTodo,
+                    tag,
+                    addTodo,
+                    removeTodo,
+                    clearTodos,
+                    editTodo,
+                    finishEdit,
+                    handleBlur,
+                    filteredTodos,
+                    undoneTodosAmount
+                };
+            }
+        }).directive("focus", {
+            mounted(el) {
+                el.focus();
+            }
+        }).mount("#app");
+    </script>
+</body>
+
+</html>
