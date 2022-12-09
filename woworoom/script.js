@@ -181,6 +181,7 @@ function deleteProduct(e) {
             axios.delete(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`)
                 .then(res => {
                     cartList = res.data.carts;
+                    totalPrice = res.data.finalTotal;
                     alertMessage = res.data.message;
                     renderCartList(cartList);
                     alert(alertMessage);
