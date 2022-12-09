@@ -26,11 +26,12 @@ function getProductList() {
 }
 
 let cartList = [];
-let totalPrice;
+let totalPrice = 0;
 
 function getCartList() {
     axios.get(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`)
         .then(function(res) {
+            console.log(res);
             cartList = res.data.carts;
             totalPrice = res.data.finalTotal;
             renderCartList(cartList);
@@ -86,7 +87,7 @@ function renderCartList(data) {
                         <td>
                             <p>總金額</p>
                         </td>
-                        <td>NT$ ${totalPrice}</td>
+                        <td>NT$ ${toThousand(totalPrice)}</td>
                     </tr>`
     }
     shoppingCartList.innerHTML = str;
@@ -139,6 +140,7 @@ function addProduct(e) {
             })
             .then(res => {
                 cartList = res.data.carts;
+                totalPrice = res.data.finalTotal;
                 renderCartList(cartList);
                 alert("加入購物車成功");
             })
@@ -162,6 +164,7 @@ function deleteProduct(e) {
             axios.delete(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts/${id}`)
                 .then(res => {
                     cartList = res.data.carts;
+                    totalPrice = res.data.finalTotal;
                     renderCartList(cartList);
                     alert("已刪除該筆商品");
                 })
