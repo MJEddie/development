@@ -111,3 +111,35 @@ function productFilter(e) {
 
     renderProductList(categoryFilter);
 }
+
+// add to shopping cart
+productWrap.addEventListener('click', addProduct)
+
+function addProduct(e) {
+    e.preventDefault();
+    const addBtn = e.target.getAttribute('class') === 'addCardBtn';
+    if (addBtn) {
+        const id = e.target.getAttribute('data-id');
+        const title = e.target.nextElementSibling.getAttribute('data-title');
+        let productNum = 1;
+        cartList.forEach(list => {
+            if (list.product.title === title) {
+                productNum = list.quantity + 1;
+            }
+        })
+        axios.post(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`, {
+                data: {
+                    productId: id,
+                    quantity: productNum
+                }
+            })
+            .then(res => {
+                cartList = res.data.carts;
+                renderCartList(cartList);
+                alert("加入購物車成功");
+            })
+            .catch(err => {
+                console.log(err)
+            });
+    }
+}
