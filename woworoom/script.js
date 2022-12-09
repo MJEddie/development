@@ -103,13 +103,17 @@ productSelect.addEventListener('change', productFilter);
 
 function productFilter(e) {
     let category = e.target.value;
-    const categoryFilter = productList.filter(product => {
-        if (category === product.category) {
-            return product.category;
-        }
-    });
+    if (category === '全部') {
+        renderProductList(productList);
+    } else {
+        const categoryFilter = productList.filter(product => {
+            if (category === product.category) {
+                return product.category;
+            }
+        });
 
-    renderProductList(categoryFilter);
+        renderProductList(categoryFilter);
+    }
 }
 
 // add to shopping cart
@@ -183,4 +187,31 @@ function deleteProduct(e) {
                 });
         }
     }
+}
+
+// create order
+orderBtn.addEventListener('click', createOrder)
+
+function createOrder(e) {
+    e.preventDefault();
+    const form = document.querySelector('.orderInfo-form');
+    const formData = new FormData(form);
+    const inputObject = Object.fromEntries(formData);
+    if (cartList.length == 0) {
+        alert('請先加入商品至購物車')
+    }
+    axios.post(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/orders`, {
+            data: {
+                user: inputObject
+            }
+        })
+        .then(res => {
+            alert('訂單建立成功');
+            form.reset();
+            getCartList();
+            // console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
