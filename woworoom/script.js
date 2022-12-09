@@ -143,3 +143,44 @@ function addProduct(e) {
             });
     }
 }
+
+// delete product
+shoppingCartList.addEventListener('click', deleteProduct)
+
+function deleteProduct(e) {
+    e.preventDefault();
+    const id = e.target.getAttribute('data-id');
+
+    // delete single product
+    if (e.target.getAttribute('class') === 'material-icons') {
+        confirm("確定刪除嗎");
+        if (confirm("確定刪除嗎")) {
+            axios.delete(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts/${id}`)
+                .then(res => {
+                    cartList = res.data.carts;
+                    renderCartList(cartList);
+                    alert("已刪除該筆商品");
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }
+
+    // delete all products
+    if (e.target.getAttribute('class') === 'discardAllBtn') {
+        confirm("確定刪除所有品項嗎");
+        if (confirm("確定刪除所有品項嗎")) {
+            axios.delete(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`)
+                .then(res => {
+                    cartList = res.data.carts;
+                    alertMessage = res.data.message;
+                    renderCartList(cartList);
+                    alert(alertMessage);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }
+}
