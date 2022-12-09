@@ -15,8 +15,7 @@ init();
 let productList = [];
 
 function getProductList() {
-    const URL = `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/products`;
-    axios.get(URL)
+    axios.get(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/products`)
         .then(function(res) {
             productList = res.data.products;
             renderProductList(productList);
@@ -30,8 +29,7 @@ let cartList = [];
 let totalPrice;
 
 function getCartList() {
-    const URL = `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`;
-    axios.get(URL)
+    axios.get(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`)
         .then(function(res) {
             cartList = res.data.carts;
             totalPrice = res.data.finalTotal;
@@ -97,4 +95,19 @@ function renderCartList(data) {
 function toThousand(num) {
     const numStr = num.toString();
     return numStr.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Event Listener
+// product filter
+productSelect.addEventListener('change', productFilter);
+
+function productFilter(e) {
+    let category = e.target.value;
+    const categoryFilter = productList.filter(product => {
+        if (category === product.category) {
+            return product.category;
+        }
+    });
+
+    renderProductList(categoryFilter);
 }
