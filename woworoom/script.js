@@ -3,7 +3,13 @@ const productSelect = document.querySelector('.productSelect');
 const shoppingCartList = document.querySelector('.shoppingCartList');
 const orderBtn = document.querySelector('.orderInfo-btn');
 
-let productList = [];
+//init
+function init() {
+    getProductList();
+    getCartList();
+}
+
+init();
 
 // get product list
 function getProductList() {
@@ -34,4 +40,9 @@ function renderProductList(data) {
             </li>`
     });
     productWrap.innerHTML = str;
+}
+
+function toThousand(num) {
+    const numStr = num.toString();
+    return numStr.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
