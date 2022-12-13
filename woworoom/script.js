@@ -159,7 +159,6 @@ function deleteProduct(e) {
 
     // delete single product
     if (e.target.getAttribute('class') === 'material-icons') {
-        confirm("確定刪除嗎");
         if (confirm("確定刪除嗎")) {
             axios.delete(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts/${id}`)
                 .then(res => {
@@ -172,11 +171,11 @@ function deleteProduct(e) {
                     console.log(err);
                 });
         }
+        return
     }
 
     // delete all products
     if (e.target.getAttribute('class') === 'discardAllBtn') {
-        confirm("確定刪除所有品項嗎");
         if (confirm("確定刪除所有品項嗎")) {
             axios.delete(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`)
                 .then(res => {
